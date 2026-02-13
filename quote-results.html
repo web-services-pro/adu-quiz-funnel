@@ -22,9 +22,25 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window,document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-         fbq('init', '764970315154958'); 
+
+        // 1. Retrieve Lead Info from LocalStorage
+        const leadData = JSON.parse(localStorage.getItem('adu_lead_data') || '{}');
+        const userEmail = leadData.email ? leadData.email.toLowerCase().trim() : null;
+        const userPhone = leadData.phone ? leadData.phone.replace(/\D/g, '') : null;
+
+        // 2. Initialize with Advanced Matching Data
+        fbq('init', '764970315154958', {
+            em: userEmail,
+            ph: userPhone
+        }); 
+    
         fbq('track', 'PageView');
-            fbq('track', 'Lead');
+    
+        // 3. Track Lead with Parameters
+        fbq('track', 'Lead', {
+            content_name: 'ADU Quote Result',
+            status: 'Quiz Completed'
+        });
     </script>
     <noscript>
      <img height="1" width="1" 
